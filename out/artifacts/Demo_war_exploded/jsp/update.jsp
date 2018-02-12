@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: russell
-  Date: 18-2-1
-  Time: 下午4:15
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -20,7 +13,7 @@
 <head>
     <title>修改图书信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <style type="text/css">
         .nav {
             width: 100%;
@@ -31,6 +24,7 @@
             font-size: 45px;
             margin: 20px 0 0 100px;
         }
+
         table {
             width: 100%;
             margin-top: 10px;
@@ -38,104 +32,162 @@
             border-collapse: separate;
             padding: 0px;
         }
-        th{
+
+        th {
             text-align: center;
         }
-        td{
-            height:70px;
+
+        td {
+            height: 70px;
             text-align: center;
         }
+
         .tb1 {
             width: 240px;
         }
 
         .tb2 {
-            width: 270px;
+            width: 300px;
         }
 
         .tb3 {
             width: 180px;
         }
+
         .container {
             width: 100%;
         }
-        button > span{
-            color:black;
+
+        button > span {
+            color: black;
         }
-        .col-md-2 > div{
-            font-size:80px;
+
+        .col-md-2 > div {
+            font-size: 80px;
             text-align: center;
         }
-        .head{
-            background-color:whitesmoke;
+
+        .head {
+            background-color: whitesmoke;
         }
-        .myf{
-            border:4px black solid;
+
+        .myf {
+            border: 4px black solid;
         }
-        input{
-            height:80px;
-            font-size:20px;
-            margin:-2px;
+
+        input {
+            height: 80px;
+            font-size: 20px;
+            margin: -2px;
             border: 1px black solid;
             text-align: center;
         }
-        .mybtn{
-            margin-left:5px;
-            margin-top:-5px;
-            width:200px;
-            height:75px;
+
+        .mybtn {
+            margin-left: 5px;
+            margin-top: -5px;
+            width: 200px;
+            height: 75px;
+        }
+
+        .headbtn {
+            float: left;
+            display: inline;
+            height: 60px;
+            width: 200px;
+            font-size: 20px;
+            margin: 12px 0px 12px 60px;
+        }
+
+        .search {
+            display: inline;
+            height: 60px;
+            font-size: 18px;
+        }
+
+        .seainput {
+            height: 60px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-<nav class="nav navbar-default head">
-    <div>Easy图书管理系统</div>
+<nav class="nav navbar-header head">
+    <div style="display: inline-block;" class="glyphicon glyphicon-bookBean"> Easy图书管理系统</div>
 </nav>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th class="tb1">编号</th>
-                    <th class="tb2">书名</th>
-                    <th class="tb2">作者</th>
-                    <th class="tb2">出版时间</th>
-                    <th class="tb3">类别</th>
-                    <th>状态</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-                    <tr>
-                        <td><span>${book.id}</span>
-                        <td><span>${book.name}</span>
-                        <td><span>${book.author}</span>
-                        <td><span>${book.pub_time}</span>
-                        <td><span>${book.type}</span>
-                        <td>修改前</td>
-                    </tr>
-                </tbody>
-            </table>
-            <form action="${url}/Servlet_TbBook?what=update" method="post" class="myf">
-                <input type="text" value="${book.id}" name="id" class="tb1" readonly="readonly">
-                <input type="text" value="${book.name}" name="name" class="tb2">
-                <input type="text" value="${book.author}" name="author" class="tb2">
-                <input type="text" value="${book.pub_time}" name="pub_time" class="tb2">
-                <input type="text" value="${book.type}" name="type" class="tb3">
-                <button  class="mybtn btn btn-danger btn-lg" onclick="alert('修改成功！')">提交</button>
-            </form>
-
-        </div>
+<button class="btn btn-success headbtn" onclick="index()">首页</button>
+<div class="input-group col-md-2" style="float:right; margin:12px 50px 12px 0px;">
+    <input id="search" type="text" class="form-control seainput" placeholder="请输入书名关键字" onkeypress="key()">
+    <span class="input-group-btn">
+        <button id="key" class="btn btn-info btn-search glyphicon glyphicon-search search"
+                onclick="search()">查找</button>
+    </span>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body" style="margin:0px 15px 0px 15px;">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="tb1">编号</th>
+                <th class="tb2">书名</th>
+                <th class="tb2">作者</th>
+                <th class="tb3">出版时间</th>
+                <th class="tb2">类别</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><span>${bookBean.id}</span>
+                <td><span>${bookBean.name}</span>
+                <td><span>${bookBean.author}</span>
+                <td><span>${bookBean.pub_time}</span>
+                <td><span>${bookBean.type}</span>
+            </tr>
+            </tbody>
+        </table>
+        <form action="${url}/Servlet_TbBook?what=update&p=<%=request.getParameter("page")%>" method="post" class="myf">
+            <input type="text" value="${bookBean.id}" name="id" class="tb1" readonly="readonly">
+            <input type="text" value="${bookBean.name}" name="name" class="tb2">
+            <input type="text" value="${bookBean.author}" name="author" class="tb2">
+            <input type="text" value="${bookBean.pub_time}" name="pub_time" class="tb2">
+            <input type="text" value="${bookBean.type}" name="type" class="tb2">
+            <div style="text-align: center;">
+                <input type="submit" class="mybtn btn btn-danger btn-lg" onclick="yes()">
+            </div>
+        </form>
     </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.0/jquery.js"></script>
 <script type="text/javascript">
+    function yes() {
+        var p = parseInt(<%=request.getParameter("page")%>);
+        var furl = "${url}/Servlet_TbBook?what=queryByPage&page=" + p;
+        alert('修改成功！');
+        window.location.href = furl;
+    }
+
+    function search() {
+        var name = document.getElementById("search").value;
+        var page = 1;
+        var nurl = "${url}/Servlet_TbBook?what=queryByName&name=" + encodeURIComponent(name) + "&page=" + page;
+        window.location.href = nurl;
+    }
+
+    function index() {
+        var indexurl = "${url}/Servlet_TbBook?what=queryByPage&page=1";
+        window.location.href = indexurl;
+    }
+
+    function key() {
+        if (event.keyCode == 13) {
+            document.getElementById("key").click();
+        }
+    }
 </script>
 </body>
 </html>
 
 <!--
-
 
 
 -->

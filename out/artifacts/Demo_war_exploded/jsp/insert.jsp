@@ -1,3 +1,4 @@
+<%@ page import="com.zxc.dao.Tb_BookImpl" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -11,7 +12,7 @@
        value="${pageContext.request.contextPath }"></c:set>
 <html>
 <head>
-    <title>修改图书信息</title>
+    <title>添加图书信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <style type="text/css">
@@ -135,49 +136,38 @@
                 <th class="tb2">类别</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td><span>${bookBean.id}</span>
-                <td><span>${bookBean.name}</span>
-                <td><span>${bookBean.author}</span>
-                <td><span>${bookBean.pub_time}</span>
-                <td><span>${bookBean.type}</span>
-            </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
-        <form action="${url}/Servlet_TbBook?what=update&p=<%=request.getParameter("page")%>" method="post" class="myf">
-            <input type="text" value="${bookBean.id}" name="id" class="tb1" readonly="readonly">
-            <input type="text" value="${bookBean.name}" name="name" class="tb2">
-            <input type="text" value="${bookBean.author}" name="author" class="tb2">
-            <input type="text" value="${bookBean.pub_time}" name="pub_time" class="tb2">
-            <input type="text" value="${bookBean.type}" name="type" class="tb2">
+        <form action="${url}/Servlet_TbBook?what=Insert" method="post" class="myf">
+            <input type="text" name="id" class="tb2">
+            <input type="text" name="name" class="tb2">
+            <input type="text" name="author" class="tb2">
+            <input type="text" name="pub_time" class="tb2">
+            <input type="text" name="type" class="tb2">
             <div style="text-align: center;">
-                <input type="submit" class="mybtn btn btn-danger btn-lg" onclick="yes()">
+                <input type="submit" class="mybtn btn btn-danger btn-lg" onclick="yes()" >
             </div>
         </form>
+
     </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.0/jquery.js"></script>
 <script type="text/javascript">
     function yes() {
-        var p = parseInt(<%=request.getParameter("page")%>);
-        var furl = "${url}/Servlet_TbBook?what=queryByPage&page=" + p;
-        alert('修改成功！');
+        var furl = "${url}/Servlet_TbBook?what=queryByPage&page="+<%=new Tb_BookImpl().getPageCount()%>;
+        alert('添加成功！');
         window.location.href = furl;
     }
-
     function search() {
         var name = document.getElementById("search").value;
         var page = 1;
         var nurl = "${url}/Servlet_TbBook?what=queryByName&name=" + encodeURIComponent(name) + "&page=" + page;
         window.location.href = nurl;
     }
-
     function index() {
         var indexurl = "${url}/Servlet_TbBook?what=queryByPage&page=1";
         window.location.href = indexurl;
     }
-
     function key() {
         if (event.keyCode == 13) {
             document.getElementById("key").click();

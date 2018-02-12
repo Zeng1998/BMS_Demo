@@ -1,6 +1,6 @@
 package com.zxc.servlet;
 
-import com.zxc.admin.AccountBean;
+import com.zxc.Bean.AccountBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +21,8 @@ public class CheckAccount extends HttpServlet {
         HttpSession session=req.getSession();
         AccountBean account =new AccountBean();
         resp.setContentType("text/html;charset=utf-8");
-        String username=req.getParameter("id");
-        String psw=req.getParameter("psw");
+        String username=req.getParameter("username");
+        String psw=req.getParameter("password");
         account.setPassword(psw);
         account.setUsername(username);
         if((username!=null) && (username.equals("admin")) && (psw!=null) && (psw.equals("zxc12345"))){

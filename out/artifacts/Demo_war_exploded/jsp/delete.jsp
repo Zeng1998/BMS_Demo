@@ -11,7 +11,7 @@
        value="${pageContext.request.contextPath }"></c:set>
 <html>
 <head>
-    <title>修改图书信息</title>
+    <title>删除图书信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <style type="text/css">
@@ -47,7 +47,7 @@
         }
 
         .tb2 {
-            width: 300px;
+            width: 270px;
         }
 
         .tb3 {
@@ -131,11 +131,11 @@
                 <th class="tb1">编号</th>
                 <th class="tb2">书名</th>
                 <th class="tb2">作者</th>
-                <th class="tb3">出版时间</th>
-                <th class="tb2">类别</th>
+                <th class="tb2">出版时间</th>
+                <th class="tb3">类别</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody></tbody>
             <tr>
                 <td><span>${bookBean.id}</span>
                 <td><span>${bookBean.name}</span>
@@ -145,25 +145,26 @@
             </tr>
             </tbody>
         </table>
-        <form action="${url}/Servlet_TbBook?what=update&p=<%=request.getParameter("page")%>" method="post" class="myf">
-            <input type="text" value="${bookBean.id}" name="id" class="tb1" readonly="readonly">
-            <input type="text" value="${bookBean.name}" name="name" class="tb2">
-            <input type="text" value="${bookBean.author}" name="author" class="tb2">
-            <input type="text" value="${bookBean.pub_time}" name="pub_time" class="tb2">
-            <input type="text" value="${bookBean.type}" name="type" class="tb2">
-            <div style="text-align: center;">
-                <input type="submit" class="mybtn btn btn-danger btn-lg" onclick="yes()">
-            </div>
-        </form>
+        <div style="text-align: center;">
+            <button class="btn btn-danger btn-lg" style="margin-right:100px;" onclick="yes()">确定删除</button>
+            <button class="btn btn-success btn-lg" onclick="no()">取消并返回</button>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.0/jquery.js"></script>
 <script type="text/javascript">
     function yes() {
+        var i = parseInt(<%=request.getParameter("id")%>);
         var p = parseInt(<%=request.getParameter("page")%>);
-        var furl = "${url}/Servlet_TbBook?what=queryByPage&page=" + p;
-        alert('修改成功！');
+        var furl = "${url}/Servlet_TbBook?what=delete&id=" + i + "&p=" + p;
+        alert("删除成功！");
         window.location.href = furl;
+    }
+
+    function no() {
+        var i = parseInt(<%=request.getParameter("page")%>);
+        var murl = "${url}/Servlet_TbBook?what=queryByPage&page=" + i;
+        window.location.href = murl;
     }
 
     function search() {
